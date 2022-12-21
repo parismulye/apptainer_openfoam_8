@@ -1,0 +1,38 @@
+Bootstrap: docker
+From: ubuntu:18.04
+
+%files
+  # copy the install script into the container
+  install.sh /opt/
+
+%post
+  # basic update and prerequisites for openfoam
+  apt-get -y update
+  apt-get -y install build-essential \
+  ca-certificates cmake git nano \
+  flex libfl-dev bison \
+  zlib1g-dev libboost-system-dev \
+  libboost-thread-dev libopenmpi-dev \
+  openmpi-bin gnuplot libreadline-dev \
+  libncurses-dev libxt-dev
+
+  # get openfoam-8 and third-party 8
+  cd /opt 
+  mkdir OpenFOAM
+  cd /opt/OpenFOAM
+  git clone https://github.com/OpenFOAM/OpenFOAM-8.git
+  git clone https://github.com/OpenFOAM/ThirdParty-8.git
+
+  # change the path in the openfoam bashrc from home to opt
+  cd /opt/OpenFOAM/OpenFOAM-8/etc/
+  sed -i 's/export\sFOAM_INST_DIR=$HOME/#\ export\ FOAM_INST_DIR=$HOME/' ./bashrc
+  sed -i 's3#\sexport\sFOAM_INST_DIR=/opt3export\ FOAM_INST_DIR=/opt3g' ./bashrc
+  
+  # compile third party and openfoam
+  cd /opt
+  chmod +x install.sh 
+  ./install.sh 
+
+%environment
+  # adding aliases and vars into shell env
+  source /opt/OpenFOAM/OpenFOAM-8/etc/bashrc
