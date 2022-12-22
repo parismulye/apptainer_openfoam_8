@@ -27,7 +27,11 @@ From: ubuntu:18.04
   cd /opt/OpenFOAM/OpenFOAM-8/etc/
   sed -i 's/export\sFOAM_INST_DIR=$HOME/#\ export\ FOAM_INST_DIR=$HOME/' ./bashrc
   sed -i 's3#\sexport\sFOAM_INST_DIR=/opt3export\ FOAM_INST_DIR=/opt3g' ./bashrc
-  
+
+  # adding the path for user project folder (to store solvers)
+  sed -i 's3export\sWM_PROJECT_USER_DIR=$HOME/$WM_PROJECT/$USER-$WM_PROJECT_VERSION3export\ WM_PROJECT_USER_DIR=/opt/OpenFOAM/UserFOAM3g' ./bashrc
+  mkdir -p /opt/OpenFOAM/UserFOAM/applications/solver 
+
   # compile third party and openfoam
   cd /opt
   chmod +x install.sh 
