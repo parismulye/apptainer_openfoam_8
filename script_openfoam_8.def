@@ -39,4 +39,4 @@ From: ubuntu:18.04
 
 %environment
   # adding aliases and vars into shell env
-  source /opt/OpenFOAM/OpenFOAM-8/etc/bashrc
+  . /opt/OpenFOAM/OpenFOAM-8/etc/bashrc
